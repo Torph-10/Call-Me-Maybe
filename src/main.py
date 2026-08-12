@@ -44,8 +44,11 @@ def main() -> None:
     llm: Small_LLM_Model = Small_LLM_Model()
 
     print("Starting constrained generation...")
-    engine.generate_json_calls(context, llm)
-
+    try:
+        engine.generate_json_calls(context, llm)
+    except KeyboardInterrupt:
+        print("\nThe program interrupted by user!")
+        sys.exit(1)
     out_file: Path = Path(context.output_path)
     out_file.parent.mkdir(parents=True, exist_ok=True)
 
@@ -53,6 +56,7 @@ def main() -> None:
         json.dump(context.generated_results, file, indent=4)
 
     print(f"Execution complete. Check: {context.output_path}")
+
 
 if __name__ == "__main__":
     main()

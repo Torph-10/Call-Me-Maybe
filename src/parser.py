@@ -18,13 +18,13 @@ class PromptContext(BaseModel):
 def get_cl_arguments() -> tuple[str, str, str]:
     """Reads and returns paths from command-line arguments."""
     parser = argparse.ArgumentParser()
-    parser.add_argument("--functions_definition", 
+    parser.add_argument("--functions_definition",
                         default="data/input/functions_definition.json")
-    parser.add_argument("--input", 
+    parser.add_argument("--input",
                         default="data/input/function_calling_tests.json")
-    parser.add_argument("--output", 
+    parser.add_argument("--output",
                         default="data/output/function_calls.json")
-    
+
     args = parser.parse_args()
     return args.functions_definition, args.input, args.output
 
@@ -32,7 +32,8 @@ def get_cl_arguments() -> tuple[str, str, str]:
 def load_functions(filepath: str) -> list[dict[str, Any]]:
     """Reads the JSON file containing the tools/functions definitions."""
     with open(filepath, "r", encoding="utf-8") as f:
-        return json.load(f)
+        data: list[dict[str, Any]] = json.load(f)
+    return data
 
 
 def get_function_names(schemas: list[dict[str, Any]]) -> list[str]:
@@ -40,13 +41,16 @@ def get_function_names(schemas: list[dict[str, Any]]) -> list[str]:
     return [tool['name'] for tool in schemas]
 
 
-def get_functions_dict(schemas: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
+def get_functions_dict(
+    schemas: list[dict[str, Any]]
+) -> dict[str, dict[str, Any]]:
     """Indexes function definitions by their name for quick access."""
     return {tool['name']: tool for tool in schemas}
 
 
 def get_function_params(schemas: list[dict[str, Any]]) -> dict[str, list[str]]:
-    """Creates a mapping between function names and their required parameter keys."""
+    """Creates a mapping between function names
+    and their required parameter keys."""
     param_map: dict[str, list[str]] = {}
     for tool in schemas:
         param_map[tool['name']] = list(tool['parameters'].keys())
@@ -57,12 +61,12 @@ def load_user_prompts(filepath: str) -> list[str]:
     """Reads and validates the user queries from the input JSON."""
     with open(filepath, "r", encoding="utf-8") as f:
         data = json.load(f)
-    
+
     prompts = []
     for item in data:
         prompt = item.get('prompt', '')
         if not prompt:
             raise ValueError("Encountered an empty prompt in the input file.")
         prompts.append(prompt)
-        
+
     return prompts
