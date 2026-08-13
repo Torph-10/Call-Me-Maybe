@@ -27,5 +27,3 @@ lint: install
 		--ignore-missing-imports \
 		--disallow-untyped-defs \
 		--check-untyped-defs
-
-re: clean install

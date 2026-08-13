@@ -45,7 +45,7 @@ uv sync
 ```
 
 This installs `numpy`, `pydantic`, and the rest of the pinned dependencies from
-`pyproject.toml` / `uv.lock`.
+`pyproject.toml` .
 
 ### Running the program
 
@@ -72,7 +72,6 @@ uv run python -m src \
 | `run`     | Runs the main script (`uv run python -m src`)                       |
 | `debug`   | Runs the main script under `pdb`                                    |
 | `lint`    | Runs `flake8 .` and `mypy .` with the mandatory flags                |
-| `lint-strict` | Runs `flake8 .` and `mypy . --strict`                            |
 | `clean`   | Removes `__pycache__`, `.mypy_cache`, and other build artifacts      |
 
 ## Algorithm Explanation
@@ -273,14 +272,11 @@ produces `data/output/function_calling_results.json`:
 - [Hugging Face — Transformers documentation](https://huggingface.co/docs/transformers)
 - [Hugging Face — Tokenizers / BPE overview](https://huggingface.co/docs/tokenizers/)
 - OpenAI — [Function calling guide](https://platform.openai.com/docs/guides/function-calling)
-- [Guidance library (Microsoft)](https://github.com/guidance-ai/guidance) — grammar-constrained generation
-- [Outlines library](https://github.com/dottxt-ai/outlines) — structured/constrained text generation with LLMs (used here only as conceptual reference; not imported, per subject rules)
-- Sennrich et al., *Neural Machine Translation of Rare Words with Subword Units* (2016) — the original BPE paper underlying most modern tokenizers
-- Qwen Team — [Qwen3 model card](https://huggingface.co/Qwen/Qwen3-0.6B)
+- [Guidance library (Microsoft)](https://github.com/guidance-ai/guidance) 
 
 ### How AI was used in this project
 
-An AI assistant (Claude) was used during development for the following, well-scoped
+An AI assistant (chatgpt) was used during development for the following, well-scoped
 tasks:
 
 - **Debugging**: diagnosing and fixing a `mypy` type error in `src/engine.py`

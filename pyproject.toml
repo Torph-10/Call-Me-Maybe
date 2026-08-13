@@ -19,3 +19,6 @@ members = [
 
 [tool.uv.sources]
 llm-sdk = { workspace = true, editable = true }
+
+[tool.mypy]
+mypy_path = "llm_sdk"

@@ -1,7 +1,7 @@
 import json
 import argparse
 from typing import Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 
 class PromptContext(BaseModel):
@@ -12,7 +12,7 @@ class PromptContext(BaseModel):
     user_prompts: list[str]
     tool_parameters: dict[str, list[str]]
     schema_mapping: dict[str, dict[str, Any]]
-    generated_results: list[dict[str, Any]] = Field(default_factory=list)
+    generated_results: list[dict[str, Any]] = []
 
 
 def get_cl_arguments() -> tuple[str, str, str]:
