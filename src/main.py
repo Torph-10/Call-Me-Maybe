@@ -16,10 +16,8 @@ def main() -> None:
     4. Generate outputs via constrained decoding.
     5. Save results to disk.
     """
-    # 1. Parse arguments
     functions_def_path, input_path, output_path = parser.get_cl_arguments()
 
-    # 2. Load and parse data
     try:
         functions = parser.load_functions(functions_def_path)
         functions_dict = parser.get_functions_dict(functions)
@@ -30,7 +28,6 @@ def main() -> None:
         print(f"File reading error: {e}", file=sys.stderr)
         sys.exit(1)
 
-    # 3. Create Central Data Structure
     context: parser.PromptContext = parser.PromptContext(
         output_path=output_path,
         raw_functions=functions,
@@ -40,11 +37,10 @@ def main() -> None:
         schema_mapping=functions_dict
     )
 
-    print("Initializing the LLM...")
-    llm: Small_LLM_Model = Small_LLM_Model()
-
-    print("Starting constrained generation...")
     try:
+        print("Initializing the LLM...")
+        llm: Small_LLM_Model = Small_LLM_Model()
+        print("Starting constrained generation...")
         engine.generate_json_calls(context, llm)
     except KeyboardInterrupt:
         print("\nThe program interrupted by user!")
