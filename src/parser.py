@@ -64,8 +64,8 @@ def load_user_prompts(filepath: str) -> list[str]:
 
     prompts = []
     for item in data:
-        prompt = item.get('prompt', '')
-        if not prompt:
+        prompt: str = item.get('prompt', '')
+        if not prompt.strip():
             raise ValueError("Encountered an empty prompt in the input file.")
         prompts.append(prompt)
 
