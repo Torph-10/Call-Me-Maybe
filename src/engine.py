@@ -44,10 +44,16 @@ def get_function_name(
     context: PromptContext, llm: Small_LLM_Model, query: str
 ) -> str:
     """Masks logits to ensure the LLM only outputs a valid function name."""
+    functions_text = "\n".join(
+        f"- {func['name']}: {func.get('description', '')}"
+        for func in context.raw_functions
+    )
     prompt = (
-        "Get the most suitable function name for this user request:\n"
-        f"User request: {query}.\n"
-        f"Available functions: {context.raw_functions}.\n"
+        "Choose the function that best matches the user request.\n"
+        "Use the function descriptions to determine the correct function.\n\n"
+        f"User request: {query}\n\n"
+        f"Available functions:\n{functions_text}\n\n"
+        "Function name:"
     )
     result_name = ""
     valid_names = context.available_tool_names.copy()
