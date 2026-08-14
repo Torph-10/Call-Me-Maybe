@@ -49,8 +49,7 @@ def main() -> None:
     out_file.parent.mkdir(parents=True, exist_ok=True)
 
     with out_file.open("w", encoding="utf-8") as file:
-        json.dump(context.generated_results, file, indent=4)
-
+        json.dump(context.generated_results, file, ensure_ascii=False, indent=4)
     print(f"Execution complete. Check: {context.output_path}")
 
 

@@ -45,8 +45,8 @@ def get_function_name(
 ) -> str:
     """Masks logits to ensure the LLM only outputs a valid function name."""
     functions_text = "\n".join(
-        f"- {func['name']}: {func.get('description', '')}"
-        for func in context.raw_functions
+    f"- {func['name']}: {func.get('description', '')}"
+    for func in context.raw_functions
     )
     prompt = (
         "Choose the function that best matches the user request.\n"
