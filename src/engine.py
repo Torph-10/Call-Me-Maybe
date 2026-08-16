@@ -45,8 +45,8 @@ def get_function_name(
 ) -> str:
     """Masks logits to ensure the LLM only outputs a valid function name."""
     functions_text = "\n".join(
-    f"- {func['name']}: {func.get('description', '')}"
-    for func in context.raw_functions
+        f"- {func['name']}: {func.get('description', '')}"
+        for func in context.raw_functions
     )
     prompt = (
         "Choose the function that best matches the user request.\n"
@@ -101,7 +101,7 @@ def _decode_int(
                 logits[token_id] = float("-inf")
                 continue
 
-            token = vocab[token_id]
+            token = vocab[token_id].replace("Ġ", " ")
             is_valid = (
                 all(c in "-0123456789" for c in token)
                 or token.strip() in [',', '}']
@@ -205,7 +205,6 @@ def _decode_str(
             sorted(enumerate(logits), key=lambda item: item[1], reverse=True)
         )
 
-        i = 0
         for token_id, score in sorted_logits:
             if token_id >= len(vocab):
                 logits[token_id] = float("-inf")
@@ -213,14 +212,12 @@ def _decode_str(
 
             token = vocab[token_id].replace("Ġ", " ").replace("Ċ", "")
 
-            if i < 20:
-                i += 1
-                if (
-                    (token == '"' and len(value) == 0) or
-                    (token == "'" and len(value) == 0) or
-                    ('"' in token and token[0] != '"')
-                ):
-                    logits[token_id] = float("-inf")
+            if (
+                (token == '"' and len(value) == 0) or
+                (token == "'" and len(value) == 0) or
+                ('"' in token and token[0] != '"')
+            ):
+                logits[token_id] = float("-inf")
 
         best_id = int(np.argmax(logits))
         input_ids.append(best_id)
@@ -234,7 +231,7 @@ def _decode_str(
 
         value += token
 
-    return value.strip(), str(value)
+    return value.strip(), value
 
 
 def get_parameters(
